@@ -32,8 +32,10 @@ class FileUploadController extends Controller
         // }
 
         $request->validate([
-            'berkas' => 'required|file|mimes:pdf,png|max:1000',
+            'berkas' => 'required|file|mimes:jpg,pdf,png|max:1000',
         ]);
-        echo $request->berkas->getClientOriginalName() . " Lolos Validasi";
+        // echo $request->berkas->getClientOriginalName() . " Lolos Validasi";
+        $path = $request->berkas->store('uploads');
+        echo "Proses upload berhasil, file berada di: $path";
     }
 }

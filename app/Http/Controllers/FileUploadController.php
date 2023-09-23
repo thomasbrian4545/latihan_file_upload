@@ -32,4 +32,28 @@ class FileUploadController extends Controller
         $pathBaru = asset('image/' . $namaFile);
         echo "Proses upload berhasil, file berada di: <a href='$pathBaru'>$pathBaru</a>";
     }
+
+    public function fileUploadRename()
+    {
+        return view('file-upload-rename');
+    }
+
+    public function prosesFileUploadRename(Request $request)
+    {
+        $request->validate([
+            'nama_gambar' => 'required|min:5|alpha_dash',
+            'gambar_profile' => 'required|file|image|max:1000',
+        ]);
+        // ambil nama extension file asal
+        $extFile = $request->gambar_profile->getClientOriginalExtension();
+        // generate nama file akhir, diambil dari inputan nama_gambar + extension
+        $namaFile = $request->nama_gambar . "." . $extFile;
+        // pindahkan file upload ke folder storage/app/public/gambar/
+        $request->gambar_profile->storeAs('public/gambar', $namaFile);
+        // generate path gambar yang bisa diakses (path di folder public)
+        $pathPublic = asset('storage/gambar/' . $namaFile);
+        echo "Gambar berhasil di upload ke <a href=" . $pathPublic . ">$namaFile</a>";
+        echo "<br><br>";
+        echo "<img src=" . $pathPublic . " width='200px'>";
+    }
 }

@@ -18,9 +18,18 @@ class FileUploadController extends Controller
         ]);
         $extFile = $request->berkas->getClientOriginalExtension();
         $namaFile = 'lisa-' . time() . "." . $extFile;
-        $path = $request->berkas->storeAs('public', $namaFile);
-        $pathBaru = asset('storage/' . $namaFile);
-        echo "Proses upload berhasil, file berada di: <a href='$pathBaru'>
-        $pathBaru</a>";
+
+        // Metode Symlink
+        // $path = $request->berkas->storeAs('public', $namaFile);
+        // $pathBaru = asset('storage/' . $namaFile);
+        // echo "Proses upload berhasil, file berada di: <a href='$pathBaru'>
+        // $pathBaru</a>";
+
+        // Metode move()
+        $path = $request->berkas->move('image', $namaFile);
+        $path = str_replace('\\', '/', $path);
+        echo "Variabel path berisi: $path <br>";
+        $pathBaru = asset('image/' . $namaFile);
+        echo "Proses upload berhasil, file berada di: <a href='$pathBaru'>$pathBaru</a>";
     }
 }
